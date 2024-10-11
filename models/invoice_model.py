@@ -5,6 +5,6 @@ class InvoiceModel:
 
     def to_dict(self):
         return {
-            'invoice_number': self.invoice_number,
-            'total_amount': self.total_amount
+            "invoice_number": self.invoice_number,
+            "total_amount": self.total_amount
         }

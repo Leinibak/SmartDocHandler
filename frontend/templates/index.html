@@ -4,28 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SmartDocHandler</title>
-    <link rel="stylesheet" href="/static/css/style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>SmartDocHandler</h1>
-        <form id="upload-form" enctype="multipart/form-data">
-            <label for="file">Upload PDF Invoice:</label>
-            <input type="file" name="file" id="file" accept="application/pdf" required>
-            
-            <label for="invoice_type">Invoice Type:</label>
-            <select name="invoice_type" id="invoice_type" required>
-                <option value="domestic">Domestic</option>
-                <option value="foreign">Foreign</option>
-                <option value="payable">Payable</option>
-                <option value="receivable">Receivable</option>
-                <option value="credit">Credit</option>
-            </select>
-            
-            <button type="submit">Upload</button>
-        </form>
-        <div id="result"></div>
-    </div>
-    <script src="/static/js/app.js"></script>
+    <h1>Upload PDF for Processing</h1>
+    <form action="/process" method="post" enctype="multipart/form-data">
+        <label for="company">Company:</label>
+        <select name="company" id="company">
+            <option value="our_company">Our Company</option>
+            <option value="other_company">Other Company</option>
+        </select>
+        <br>
+        <label for="invoice_type">Type:</label>
+        <select name="invoice_type" id="invoice_type">
+            <option value="invoice">Invoice</option>
+            <option value="credit">Credit</option>
+        </select>
+        <br>
+        <label for="is_foreign">Foreign:</label>
+        <input type="checkbox" name="is_foreign" value="True">
+        <br>
+        <input type="file" name="pdf_file" id="pdf_file">
+        <br>
+        <button type="submit">Process PDF</button>
+    </form>
 </body>
 </html>
