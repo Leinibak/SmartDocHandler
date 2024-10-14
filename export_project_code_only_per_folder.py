@@ -1,4 +1,5 @@
 import os
+root_directory_path = "c:/"
 
 def export_folder_code(root_dir, folder_name, output_file):
     folder_path = os.path.join(root_dir, folder_name)
@@ -29,12 +30,12 @@ def export_folder_code(root_dir, folder_name, output_file):
     print(f"{folder_name} folder code exported to {output_file}")
 
 # 프로젝트 루트 디렉토리 경로 설정
-root_directory = "C:/Users/debak/Dev/SmartDocHandler"
+root_directory = root_directory_path
 
 # 처리할 폴더 목록
 folders = ['api', 'frontend', 'models', 'services', 'tests', 'utils']
 
 # 각 폴더에 대해 코드 추출 실행
 for folder in folders:
-    output_file = f"C:/Users/debak/Dev/SmartDocHandler/{folder}_code.txt"
+    output_file = f"{root_directory_path}/{folder}_code.txt"
     export_folder_code(root_directory, folder, output_file)

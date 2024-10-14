@@ -1,5 +1,5 @@
 import os
-
+root_directory_path = "c:/"
 def should_include(path):
     # 제외할 디렉토리나 파일 패턴
     exclude_patterns = [
@@ -35,9 +35,9 @@ def export_project_structure(root_dir, output_file):
                     f.write(f'{sub_indent}{file}\n')
 
 # 프로젝트 루트 디렉토리 경로 설정
-root_directory = "C:/Users/debak/Dev/SmartDocHandler"
+root_directory = root_directory_path
 # 출력 파일 경로 설정
-output_file = "C:/Users/debak/Dev/SmartDocHandler/project_structure.txt"
+output_file = f"{root_directory_path}/project_structure.txt"
 
 export_project_structure(root_directory, output_file)
 print(f"Project structure exported to {output_file}")
