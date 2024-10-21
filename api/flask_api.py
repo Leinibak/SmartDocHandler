@@ -1,8 +1,16 @@
 from flask import Flask, request, jsonify, send_from_directory, render_template
-from services.pdf_service.pdf_processor import PDFProcessor
+from services.pdf_service.pdf_processor import PDFProcessor 
+from werkzeug.utils import secure_filename
+from services.pdf_service.invoice_manager import InvoiceManager
 import os
 
 app = Flask(__name__)
+UPLOAD_FOLDER = './uploads/'
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+ALLOWED_EXTENSIONS = {'pdf', 'xlsx', 'docx'}
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route('/')
 def home():
@@ -27,3 +35,6 @@ def process_invoice():
 
 if __name__ == '__main__':
     app.run(debug=True)
+
+
+ 

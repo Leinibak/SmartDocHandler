@@ -1,11 +1,6 @@
-class DomesticInvoice:
-    def __init__(self, data):
-        self.data = data
-
-    def extract(self):
-        # 국내 인보이스에서 필요한 데이터 추출
-        return {
-            'invoice_number': self.data.get('invoice_number'),
-            'date': self.data.get('date'),
-            'total_amount': self.data.get('total_amount')
-        }
+class DomesticInvoiceProcessor:
+    def process(self, text, patterns):
+        # 특정 패턴을 사용하여 text에서 데이터 추출
+        extracted_data = {}
+        # 데이터 추출 로직
+        return extracted_data

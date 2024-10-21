@@ -75,7 +75,7 @@
                 <label for="clientSelect" class="form-label">Select Client</label>
                 <select class="form-select" id="clientSelect" required>
                   <option selected disabled value="">Choose...</option>
-                  <option value="Client1">Client 1</option>
+                  <option value="Client1">Debak</option>
                   <option value="Client2">Client 2</option>
                   <option value="Client3">Client 3</option>
                 </select>
@@ -100,19 +100,14 @@
               </div>
             </form>
 
-              <!-- File input and file list display -->
+            <!-- File input and file list display -->
             <form id="fileForm">
-              <div class="mb-3">
-                  <label for="fileInput" class="form-label">Select Files</label>
-                  <input type="file" id="fileInput" class="form-control" multiple>
-              </div>
-      
-              <div class="mb-3">
-                  <h4>Selected Files</h4>
-                  <ul id="fileList" class="list-group"></ul>
-              </div>
-      
-              <button type="submit" class="btn btn-primary">Extract and Save as Excel</button>
+                <div class="mb-3">
+                    <label for="fileInput" class="form-label">Select Files</label>
+                    <input type="file" id="fileInput" class="form-control" multiple accept=".pdf">
+                </div>
+                <ul id="fileList" class="list-group mb-3"></ul> 
+                <button type="button" class="btn btn-primary" id="extractBtn">Extract and Save as Excel</button>
             </form>
 
 
@@ -168,6 +163,13 @@
         const fileList = document.getElementById('fileList');
         const fileForm = document.getElementById('fileForm');
 
+        const extractBtn = document.getElementById('extractBtn');
+        const clientSelect = document.getElementById('clientSelect');
+        const typeSelect = document.getElementById('typeSelect');
+        const regionSelect = document.getElementById('regionSelect');
+        const successMessage = document.getElementById('successMessage');
+
+
         // Show home screen initially
         homeScreen.classList.remove('d-none');
 
@@ -212,27 +214,42 @@
         });
 
 
- /*       
-        // Handle folder input and PDF file listing
-        const folderInput = document.getElementById('folderInput');
-        const pdfFileList = document.getElementById('pdfFileList');
+        // Handle the Extract button click
+        extractBtn.addEventListener('click', function() {
+            const files = fileInput.files;
+            if (files.length === 0 || !clientSelect.value || !typeSelect.value || !regionSelect.value) {
+                alert('Please select client, type, region and files.');
+                return;
+            }
 
-        folderInput.addEventListener('change', function(event) {
-          const files = event.target.files;
-          pdfFileList.innerHTML = '';
+            const formData = new FormData();
+            formData.append('client', clientSelect.value);
+            formData.append('doc_type', typeSelect.value);
+            formData.append('region', regionSelect.value);
 
-          Array.from(files).forEach((file, index) => {
-            const checkBox = document.createElement('div');
-            checkBox.classList.add('form-check');
-            checkBox.innerHTML = `
-              <input class="form-check-input" type="checkbox" value="${file.name}" id="file${index}">
-              <label class="form-check-label" for="file${index}">${file.name}</label>
-            `;
-            pdfFileList.appendChild(checkBox);
-          });
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files[]', files[i]);
+            }
+
+            fetch('/upload', {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                successMessage.classList.remove('d-none');
+                successMessage.textContent = 'Invoice data successfully extracted and saved as Excel!';
+                window.location.href = `/download/${data.output_file}`;
+                } else {
+                alert('Failed to extract data.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error processing the request.');
+            });
         });
-
-*/
 
         // Event listener for file input
         fileInput.addEventListener('change', function(event) {
@@ -279,7 +296,8 @@
             alert("No files selected.");
           }
         });
-      });
+    });
+
     </script>
   </body>
 </html>

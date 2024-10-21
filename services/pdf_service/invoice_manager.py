@@ -1,24 +1,20 @@
-from services.pdf_service.invoice.our_company.domestic_invoice import DomesticInvoice
-from services.pdf_service.invoice.our_company.foreign_invoice import ForeignInvoice
-from services.pdf_service.invoice.other_company.domestic_invoice import OtherCompanyDomesticInvoice
-from services.pdf_service.invoice.other_company.foreign_invoice import OtherCompanyForeignInvoice
+from services.pdf_service.pdf_processor import PDFProcessor
+from services.pdf_service.excel_exporter import ExcelExporter
+from services.pdf_service.pattern_manager import PatternManager
 
 class InvoiceManager:
     def __init__(self):
-        self.invoices = []
+        self.pdf_processor = PDFProcessor()
+        self.excel_exporter = ExcelExporter()
+        self.pattern_manager = PatternManager()
 
-    def process_invoices(self, data):
-        # 여기서는 데이터에 따라 적절한 인보이스 클래스 호출
-        if data['company'] == 'our_company':
-            if data['type'] == 'domestic':
-                invoice = DomesticInvoice(data)
-            else:
-                invoice = ForeignInvoice(data)
-        else:
-            if data['type'] == 'domestic':
-                invoice = OtherCompanyDomesticInvoice(data)
-            else:
-                invoice = OtherCompanyForeignInvoice(data)
+    def process_invoices(self, client, doc_type, region, files):
+        patterns = self.pattern_manager.get_patterns(client, doc_type, region)
+        invoices = []
 
-        self.invoices.append(invoice)
-        return self.invoices
+        for file in files:
+            invoice_data = self.pdf_processor.process_pdf(file, patterns)
+            invoices.append(invoice_data)
+
+        output_file = self.excel_exporter.export_to_excel(invoices)
+        return output_file

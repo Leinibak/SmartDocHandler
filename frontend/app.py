@@ -1,8 +1,9 @@
-from flask import Flask, render_template, request, redirect, url_for
+from flask import Flask, render_template, request, redirect, url_for,send_file
+ 
 import requests
 
 app = Flask(__name__)
-
+ 
 @app.route('/')
 def index():
     return render_template('index.html')
@@ -14,6 +15,11 @@ def upload():
         response = requests.post('http://localhost:5000/process_invoice', files={'file': file})
         return response.json()
     return redirect(url_for('index'))
+
+@app.route('/download/<filename>')
+def download_excel(filename):
+    return send_file(f'../invoices_output/{filename}', as_attachment=True)
+
 
 if __name__ == '__main__':
     app.run(port=8080, debug=True)

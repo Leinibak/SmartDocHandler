@@ -1,5 +1,5 @@
 import os
-root_directory_path = "c:/"
+root_directory_path = "c:/Users/debak/Dev/SmartDocHandler"
 def should_include(path):
     # 제외할 디렉토리나 파일 패턴
     exclude_patterns = [
