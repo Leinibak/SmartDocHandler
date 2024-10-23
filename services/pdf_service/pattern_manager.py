@@ -1,19 +1,32 @@
 class PatternManager:
     def __init__(self):
-        # 패턴 목록 또는 데이터베이스에서 패턴을 불러올 수 있습니다.
+        # 패턴을 client, doc_type, region로 구분하여 저장
         self.patterns = {
-            "domestic_invoice": r"\bInvoice Number: (\d+)\b",
-            "foreign_invoice": r"\bForeign Invoice No: (\d+)\b",
-            # 더 많은 패턴 추가 가능
+            "debak": {
+                "invoice": {
+                    "domestic": r"\bInvoice Number: (\d+)\b",
+                    "foreign": r"\bForeign Invoice No: (\d+)\b"
+                }
+            },
+            "another_company": {
+                "invoice": {
+                    "domestic": r"\bLocal Invoice No: (\d+)\b",
+                    "foreign": r"\bIntl Invoice No: (\d+)\b"
+                }
+            }
+            # 필요한 만큼 더 많은 client, doc_type, region 패턴 추가 가능
         }
 
-    def get_pattern(self, document_type):
+    def get_pattern(self, client, doc_type, region):
         """
-        주어진 문서 유형에 대한 패턴을 반환합니다.
-        :param document_type: 'domestic_invoice', 'foreign_invoice' 등의 문자열
-        :return: 해당 문서 유형에 대한 정규 표현식 패턴
+        주어진 client, doc_type, region에 대한 패턴을 반환합니다.
+        :param client: 고객 이름 (예: 'debak')
+        :param doc_type: 문서 유형 (예: 'invoice')
+        :param region: 지역 (예: 'domestic', 'foreign')
+        :return: 해당 client, doc_type, region에 대한 정규 표현식 패턴
         """
-        return self.patterns.get(document_type, None)
+        # 다중 수준 딕셔너리에서 값을 안전하게 가져옴
+        return self.patterns.get(client, {}).get(doc_type, {}).get(region, None)
 
     def extract_data(self, text, document_type):
         """

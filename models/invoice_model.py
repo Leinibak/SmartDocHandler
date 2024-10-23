@@ -38,3 +38,5 @@ def get_patterns(company_name, doc_type, region):
         region=region
     ).all()
     return {pattern.field_name: pattern.pattern for pattern in patterns}
+
+ 
