@@ -3,8 +3,21 @@ import pandas as pd
 
 class ExcelExporter:
     def export_to_excel(self, invoices, output_file):
-        data = [invoice for invoice in invoices]
-        df = pd.DataFrame(data)
+        # Check if invoices is a list of dictionaries
+        if all(isinstance(invoice, dict) for invoice in invoices):
+            # Extract keys and values to create a DataFrame
+            data = []
+            for invoice in invoices:
+                # Create a row dictionary for the DataFrame
+                row = {key: value for key, value in invoice.items()}
+                data.append(row)
+            
+            df = pd.DataFrame(data)
+        else:
+            # Handle the case where invoices are in string format
+            data = {invoice.split(": ")[0]: invoice.split(": ")[1] for invoice in invoices}
+            df = pd.DataFrame(data.items(), columns=["Invoice Type", "Invoice Number"])
+        
 
         # 절대 경로로 지정
         output_dir = os.path.join(os.getcwd(), 'invoices_output')
@@ -19,22 +32,3 @@ class ExcelExporter:
             print(f"Invoices successfully exported to {output_file_path}")
         else:
             print("Error: File not created.")
-
-
-# import pandas as pd
-
-# class ExcelExporter:
-#     def export_to_excel(self, invoices, output_file):
-#         if not invoices:
-#             print("No data to export. Excel file will not be created.")
-#             return  # 데이터가 없으면 아무것도 하지 않음
-
-#         data = [invoice.extract() for invoice in invoices]
-#         df = pd.DataFrame(data)
-        
-#         # DataFrame이 비어있지 않은 경우에만 Excel 파일을 저장
-#         if not df.empty:
-#             df.to_excel(output_file, index=False)
-#             print(f"Invoices successfully exported to {output_file}")
-#         else:
-#             print("DataFrame is empty. No file saved.")

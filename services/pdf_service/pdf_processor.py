@@ -1,22 +1,37 @@
-from services.pdf_service.pdf_reader import PDFReader
+from services.pdf_service.pattern_manager import PatternManager
+import fitz  # PyMuPDF의 이름
 
 class PDFProcessor:
-    def __init__(self, client, doc_type, region):
-        self.client = client
-        self.doc_type = doc_type
-        self.region = region
+    def __init__(self):
+        self.pattern_manager = PatternManager()
 
-    def process_files(self, files, patterns):
+    def process_pdf(self, file_path, patterns):
+        # 파일에서 텍스트 추출 (예시)
+        text = self._read_pdf(file_path)
+        print("Text:", text)
 
-        extracted_data = []
-        for file in files:
-            # text = self.pdf_reader.extract_text(file)
-            data = self.extract_data(file, patterns)  # patterns 인자를 전달
-            extracted_data.append(data)
+        # PatternManager에서 패턴을 활용해 데이터 추출
+        extracted_data = {}
+        
+        # patterns가 빈 딕셔너리인지 확인
+        if patterns:
+            for field, pattern in patterns.items():
+                extracted_data[field] = self.pattern_manager.extract_data(text, pattern)
+
         return extracted_data
 
-    def extract_data(self, text, patterns):
-        # 데이터 추출 로직을 여기에 추가합니다.
-        # 예를 들어, 정규 표현식을 사용하여 patterns를 기반으로 데이터 추출
-        pass
-        return {}  # 추출된 데이터를 반환합니다.
+    def _read_pdf(self, file_path):
+        """
+        PDF 파일에서 모든 텍스트를 추출하여 문자열로 반환합니다.
+        """
+        # PDF 파일 열기
+        doc = fitz.open(file_path)
+        text = ""
+
+        # 각 페이지의 텍스트 추출
+        for page_num in range(doc.page_count):
+            page = doc.load_page(page_num)  # 페이지 로드
+            text += page.get_text("text")  # 텍스트 가져오기
+
+        doc.close()  # 파일 닫기
+        return text
