@@ -8,20 +8,6 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
-# @app.route('/upload', methods=['POST'])
-# def upload():
-#     file = request.files['file']
-#     if file:
-#         response = requests.post('http://localhost:5000/process_invoice', files={'file': file})
-#         return response.json()
-#     return redirect(url_for('index'))
-
-# @app.route('/download/<filename>')
-# def download_excel(filename):
-#     return send_file(f'../invoices_output/{filename}', as_attachment=True)
-
-
-
 # Ensure output folder exists
 OUTPUT_FOLDER = os.path.join(os.getcwd(), 'invoices_output')
 os.makedirs(OUTPUT_FOLDER, exist_ok=True)
