@@ -2,7 +2,6 @@ SmartDocHandler/
     export_project.py
     export_project_code_only_per_folder.py
     export_project_filestructure_only.py
-    invoices_output.xlsx
     project_structure.txt
     requirements.txt
     .pytest_cache/
@@ -19,9 +18,15 @@ SmartDocHandler/
     frontend/
         app.py
         static/
+            js/
+                script.js
         templates/
             index.html
+            index_0.html
+    invoices_output/
+        Debak_Invoice_Domestic_invoices.xlsx
     models/
+        invoice.py
         invoice_model.py
         __init__.py
     services/
@@ -54,6 +59,10 @@ SmartDocHandler/
         __init__.py
         test_files/
             domestic_invoice.pdf
+    uploads/
+        DebakInvoice12345678.pdf
+        DebakInvoice23456789.pdf
+        DebakInvoice34567890.pdf
     utils/
         file_utils.py
         __init__.py

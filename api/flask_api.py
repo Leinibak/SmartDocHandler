@@ -1,9 +1,10 @@
-from flask import Flask, request, jsonify, send_from_directory, send_file
+from flask import Flask, request, jsonify, send_from_directory, send_file, url_for
 from services.pdf_service.invoice_manager import InvoiceManager  # InvoiceManager 사용
 from werkzeug.utils import secure_filename
 import os
 
-app = Flask(__name__)
+# app = Flask(__name__, static_folder="../frontend/static", static_url_path="/static") 
+from frontend.app import app
 
 # Upload folder path
 UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
@@ -22,9 +23,9 @@ app.config['OUTPUT_FOLDER'] = OUTPUT_FOLDER
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-@app.route('/')
-def home():
-    return send_from_directory(os.path.join(os.path.dirname(__file__), '../frontend/templates/'), 'index.html')
+# @app.route('/')
+# def home():
+#     return send_from_directory(os.path.join(os.path.dirname(__file__), '../frontend/templates/'), 'index.html')
 
 # Route to handle file upload and PDF data extraction
 @app.route('/upload', methods=['POST'])

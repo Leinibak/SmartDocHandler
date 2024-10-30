@@ -1,12 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for,send_file
+from flask import Flask, render_template, request, redirect, url_for,send_file,send_from_directory
 import os
 import requests
 
-app = Flask(__name__)
- 
-@app.route('/')
-def index():
-    return render_template('index.html')
+
+# # static_folder와 static_url_path를 함께 지정하여 Flask가 정적 파일을 올바르게 찾도록 설정
+app = Flask(__name__, static_folder="static", static_url_path="/static")
 
 # Ensure output folder exists
 OUTPUT_FOLDER = os.path.join(os.getcwd(), 'invoices_output')
